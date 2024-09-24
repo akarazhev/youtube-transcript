@@ -1,6 +1,7 @@
 # youtube-transcript
 
-YouTube Transcript Extractor
+YouTube Transcript helps to get transcripts of YouTube videos, tokenize the transcripts, and generate a summary of 
+the transcripts using the Natural Language Toolkit.  
 
 Requirements:
 
