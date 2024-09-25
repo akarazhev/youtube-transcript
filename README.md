@@ -6,5 +6,5 @@ the transcripts using the Natural Language Toolkit.
 Requirements:
 
 - pip install pytube3 youtube-transcript-api spacy
-- python -m spacy download en_core_web_lg
-- python -m spacy download ru_core_news_lg
+- python -m spacy download en_core_web_md
+- python -m spacy download ru_core_news_md
