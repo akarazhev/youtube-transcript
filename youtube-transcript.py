@@ -7,6 +7,7 @@ import os
 from pytube import extract
 from spacy.lang.en.stop_words import STOP_WORDS
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.formatters import TextFormatter
 
 
 class YoutubeParser:
@@ -25,29 +26,25 @@ class YoutubeParser:
         else:
             raise ValueError("Invalid YouTube URL provided.")
 
-    def get_transcript_html(self):
+    def get_transcript(self):
         """
-        Get transcript HTML from YouTube.
+        Get formatted transcript from YouTube.
         """
-        text = ""
-        for elem in YouTubeTranscriptApi.get_transcript(self.extract_video_id(), languages=[self.lang]):
-            text = text + " " + elem["text"]
+        try:
+            transcript_list = YouTubeTranscriptApi.get_transcript(self.extract_video_id(), languages=[self.lang])
+            formatter = TextFormatter()
+            transcript = formatter.format_transcript(transcript_list)
+            return transcript
+        except Exception as e:
+            print(f"Error fetching transcript: {e}")
+        return None
 
-        return text
-
-    def fetch_transcript(self):
+    def get_summary(self):
         """
-        Fetch the transcript from YouTube.
-        """
-        transcript = self.get_transcript_html()
-        return transcript
-
-    def fetch_summary(self):
-        """
-        Fetch the summary from YouTube.
+        Get the summary from YouTube.
         """
         nlp = spacy.load('en_core_web_md' if self.lang == 'en' else 'ru_core_news_md')
-        document = nlp(self.get_transcript_html())
+        document = nlp(self.get_transcript())
         word_frequencies = {}
         for word in document:
             text = word.text.lower()
@@ -101,14 +98,14 @@ def main():
     youtube_parser = YoutubeParser(args.url, args.lang)
 
     try:
-        transcript = youtube_parser.fetch_transcript()
+        transcript = youtube_parser.get_transcript()
         if transcript:
             write_to_file(transcript, args.transcript)
             print(f"Transcript saved to: {args.transcript}")
         else:
             print("Failed to retrieve transcript.")
 
-        summary = youtube_parser.fetch_summary()
+        summary = youtube_parser.get_summary()
         if summary:
             write_to_file(summary, args.summary)
             print(f"Summary saved to: {args.summary}")
