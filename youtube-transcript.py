@@ -5,7 +5,8 @@ import argparse
 import spacy
 import os
 from pytube import extract
-from spacy.lang.en.stop_words import STOP_WORDS
+from spacy.lang.en.stop_words import STOP_WORDS as EN_STOP_WORDS
+from spacy.lang.ru.stop_words import STOP_WORDS as RU_STOP_WORDS
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
 
@@ -45,10 +46,11 @@ class YoutubeParser:
         """
         nlp = spacy.load('en_core_web_md' if self.lang == 'en' else 'ru_core_news_md')
         document = nlp(self.get_transcript())
+        stop_words = EN_STOP_WORDS if self.lang == 'en' else RU_STOP_WORDS
         word_frequencies = {}
         for word in document:
             text = word.text.lower()
-            if text not in list(STOP_WORDS) and text not in punctuation:
+            if text not in list(stop_words) and text not in punctuation:
                 if word.text not in word_frequencies.keys():
                     word_frequencies[word.text] = 1
                 else:
