@@ -7,12 +7,16 @@ Dependencies to install:
 
 ```bash
 pip install pytube3 youtube-transcript-api spacy
+```
+
+And spacy model:
+
+```bash
 python -m spacy download en_core_web_md
-python -m spacy download ru_core_news_md
 ```
 
 Example usage:
 
 ```bash
-python youtube-transcript.py "https://www.youtube.com/watch?v=EpipswT-LuE&ab_channel=TED" en out/transcript.txt out/summary.txt
+python youtube-transcript.py "https://www.youtube.com/watch?v=EpipswT-LuE&ab_channel=TED" out/transcript.txt out/summary.txt
 ```
