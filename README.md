@@ -1,7 +1,10 @@
 # YouTube Transcript
 
 YouTube Transcript helps to get transcripts of YouTube videos, tokenize the transcripts, and generate a summary of 
-the transcripts using the Natural Language Toolkit.  
+the transcripts using the Natural Language Toolkit by saving results to text files. It also allows you to get transcripts 
+from a channel.  
+
+## Installation
 
 Dependencies to install:
 
@@ -14,6 +17,8 @@ And spacy model:
 ```bash
 python -m spacy download en_core_web_md
 ```
+
+## Usage
 
 Example usage:
 
