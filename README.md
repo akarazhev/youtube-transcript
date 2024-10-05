@@ -23,7 +23,7 @@ python -m spacy download en_core_web_md
 Example usage:
 
 ```bash
-python youtube-transcript.py "https://www.youtube.com/watch?v=VIDEO_ID&ab_channel=CHANNEL_ID" LOCAL_DIR/transcript.txt LOCAL_DIR/summary.txt
+python youtube-transcript.py "https://www.youtube.com/watch?v=VIDEO_ID&ab_channel=CHANNEL_ID" LUNG LOCAL_DIR/transcript.txt LOCAL_DIR/summary.txt
 ```
 
 ```bash
