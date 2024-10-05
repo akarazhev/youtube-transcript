@@ -20,12 +20,14 @@ python -m spacy download en_core_web_md
 
 ## Usage
 
-Example usage:
+Example how to receive a transcript with summary from a video:
 
 ```bash
-python youtube-transcript.py "https://www.youtube.com/watch?v=VIDEO_ID&ab_channel=CHANNEL_ID" LUNG LOCAL_DIR/transcript.txt LOCAL_DIR/summary.txt
+python youtube-transcript.py "https://www.youtube.com/watch?v=VIDEO_ID&ab_channel=CHANNEL_ID" LANG LOCAL_DIR/transcript.txt LOCAL_DIR/summary.txt
 ```
 
+Example how to receive a transcripts from a video channel:
+
 ```bash
-python youtube-channel-transcript.py API_KEY CHANNEL_ID LOCAL_DIR
+python youtube-channel-transcript.py API_KEY CHANNEL_ID LANG LOCAL_DIR
 ```
