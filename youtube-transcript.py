@@ -5,15 +5,17 @@ import argparse
 import spacy
 import os
 from pytube import extract
-from spacy.lang.en.stop_words import STOP_WORDS
+from spacy.lang.en.stop_words import STOP_WORDS as EN_STOP_WORDS
+from spacy.lang.ru.stop_words import STOP_WORDS as RU_STOP_WORDS
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
 
 
 class YoutubeParser:
 
-    def __init__(self, url):
+    def __init__(self, url, lang):
         self.url = url
+        self.lang = lang
 
     def extract_video_id(self):
         """
@@ -30,7 +32,7 @@ class YoutubeParser:
         Get formatted transcript from YouTube.
         """
         try:
-            transcript_list = YouTubeTranscriptApi.get_transcript(self.extract_video_id(), languages=['en'])
+            transcript_list = YouTubeTranscriptApi.get_transcript(self.extract_video_id(), languages=[self.lang])
             formatter = TextFormatter()
             transcript = formatter.format_transcript(transcript_list)
             return transcript
@@ -42,12 +44,13 @@ class YoutubeParser:
         """
         Get the summary from YouTube.
         """
-        nlp = spacy.load('en_core_web_md')
+        nlp = spacy.load('en_core_web_md' if self.lang == 'en' else 'ru_core_news_md')
         document = nlp(self.get_transcript())
+        stop_words = EN_STOP_WORDS if self.lang == 'en' else RU_STOP_WORDS
         word_frequencies = {}
         for word in document:
             text = word.text.lower()
-            if text not in list(STOP_WORDS) and text not in punctuation:
+            if text not in list(stop_words) and text not in punctuation:
                 if word.text not in word_frequencies.keys():
                     word_frequencies[word.text] = 1
                 else:
@@ -89,11 +92,12 @@ def write_to_file(transcript, file_path):
 def main():
     parser = argparse.ArgumentParser(description="Fetch and save YouTube video transcripts and make summaries.")
     parser.add_argument("url", help="YouTube video URL")
+    parser.add_argument("lang", help="Language of the transcript")
     parser.add_argument("transcript", help="Path to save the transcript")
     parser.add_argument("summary", help="Path to save the summary")
 
     args = parser.parse_args()
-    youtube_parser = YoutubeParser(args.url)
+    youtube_parser = YoutubeParser(args.url, args.lang)
 
     try:
         transcript = youtube_parser.get_transcript()
