@@ -63,12 +63,6 @@ The required packages are listed in `requirements.txt`. They include:
    pip install -r requirements.txt
    ```
 
-5. **Download the spaCy Language Model**:
-
-   ```bash
-   python -m spacy download en_core_web_md
-   ```
-
 ## Usage
 
 The script is run via the command line and requires three positional arguments:
