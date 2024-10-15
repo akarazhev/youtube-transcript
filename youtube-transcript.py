@@ -89,8 +89,8 @@ def write_to_file(transcript, file_path):
 def main():
     parser = argparse.ArgumentParser(description="Fetch and save YouTube video transcripts and make summaries.")
     parser.add_argument("url", help="YouTube video URL")
-    parser.add_argument("transcript", help="Path to save the transcript")
-    parser.add_argument("summary", help="Path to save the summary")
+    parser.add_argument("-t", "--transcript", help="Path to save the transcript (optional)", default=None)
+    parser.add_argument("-s", "--summary", help="Path to save the summary (optional)", default=None)
 
     args = parser.parse_args()
     youtube_parser = YoutubeParser(args.url)
@@ -98,15 +98,23 @@ def main():
     try:
         transcript = youtube_parser.get_transcript()
         if transcript:
-            write_to_file(transcript, args.transcript)
-            print(f"Transcript saved to: {args.transcript}")
+            if args.transcript:
+                write_to_file(transcript, args.transcript)
+                print(f"Transcript saved to: {args.transcript}")
+            else:
+                print("\nTranscript retrieved successfully:\n")
+                print(transcript)
         else:
             print("Failed to retrieve transcript.")
 
         summary = youtube_parser.get_summary()
         if summary:
-            write_to_file(summary, args.summary)
-            print(f"Summary saved to: {args.summary}")
+            if args.summary:
+                write_to_file(summary, args.summary)
+                print(f"Summary saved to: {args.summary}")
+            else:
+                print("\nSummary retrieved successfully:\n")
+                print(summary)
         else:
             print("Failed to retrieve summary.")
 
